@@ -10,7 +10,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': 'request',
-      //ADD SECRETS
+      'Authorization': 'token ' + secrets.GITHUB_TOKEN
     }
   };
 
@@ -19,19 +19,11 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
-// function getRepoContributors(repoOwner, repoName, cb) {
-//   request.get('https://api.github.com/repos/jquery/jquery/contributors')
-//         .on('error', function (err) {
-//           throw err;
-//         })
-//         .on('response', function(response) {
-//           console.log('Response Status Code: ', response.statusCode);
-//           console.log('Response content-type: ', response.headers['content-type']);
-//         })
-//         .pipe(fs.createWriteStream('./avatar.jpg'));
-// }
-
 getRepoContributors("jquery", "jquery", function(err, result) {
-  console.log("Errors:", err);
-  console.log("Result:", result);
+  var stringed = JSON.parse(result);
+  stringed.forEach(function(obj) {
+  console.log("Result: " + obj.avatar_url);
+  });
 });
+
+
